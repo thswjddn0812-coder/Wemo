@@ -1,65 +1,59 @@
-import Image from "next/image";
+"use client"
+
+import * as React from "react"
+import { startOfToday } from "date-fns"
+import Calendar from "@/components/Calendar"
+import WeeklyView from "@/components/WeeklyView"
+import MemorySection from "@/components/MemorySection"
+import { ThemeToggle } from "@/components/ThemeToggle"
 
 export default function Home() {
+  let today = startOfToday()
+  let [selectedDay, setSelectedDay] = React.useState(today)
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    // 1. min-h-screen: 전체 화면 높이 사용
+    // 2. p-4: 모바일에서 너무 꽉 차지 않게 여백 줌
+    <main className="min-h-screen bg-gray-50 dark:bg-black p-4 md:p-8 transition-colors duration-300">
+      
+      {/* 레이아웃 컨테이너 */}
+      {/* flex-col: 모바일에서는 세로 정렬 (위->아래) */}
+      {/* lg:flex-row: 큰 화면(PC)에서는 가로 정렬 (좌->우) */}
+      <div className="flex flex-col lg:flex-row lg:items-start lg:justify-center relative gap-6">
+
+        {/* 1. Weekly View (주간 캘린더) & Memory Section */}
+        {/* 모바일: 맨 위에 보임 */}
+        {/* lg:flex-1: PC에서는 가운데 공간을 차지하도록 설정 */}
+        <div className="w-full lg:flex-1 lg:max-w-3xl lg:mx-auto space-y-6">
+          {/* Grid Layout: [Empty] [WeeklyView] [ThemeToggle] to ensure centering and no overlap */}
+          <div className="sticky top-0 z-30 bg-gray-50/95 backdrop-blur-md pt-4 pb-4 border-b border-gray-200/50 shadow-sm grid grid-cols-[1fr_auto_1fr] items-start">
+            <div></div> {/* Left Spacer */}
+            
+            <div className="w-full max-w-3xl px-4">
+              <WeeklyView selectedDay={selectedDay} onSelectDay={setSelectedDay} />
+            </div>
+
+            <div className="flex justify-end pr-4 pt-2">
+              <ThemeToggle />
+            </div>
+          </div>
+
+          {/* Mobile Only: Monthly Calendar (Placed between Weekly View and Input) */}
+          <div className="lg:hidden bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <Calendar selectedDay={selectedDay} onSelectDay={setSelectedDay} />
+          </div>
+
+          <MemorySection selectedDay={selectedDay} />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        {/* 2. Calendar (월간 캘린더) - Desktop Only */}
+        {/* lg:sticky: PC에서는 우측 상단에 '고정'되어 스크롤 따라옴 */}
+        <div className="hidden lg:block w-72 lg:sticky lg:top-8 bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
+          {/* 캘린더 컴포넌트 */}
+          <Calendar selectedDay={selectedDay} onSelectDay={setSelectedDay} />
         </div>
-      </main>
-    </div>
+
+      </div>
+    </main>
   );
 }
