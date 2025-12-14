@@ -15,6 +15,7 @@ import {
 } from "date-fns"
 import { ko } from "date-fns/locale"
 import { cn } from "@/lib/utils"
+import { getMemoryCounts } from "@/lib/api"
 
 interface CalendarProps {
   selectedDay: Date
@@ -25,11 +26,26 @@ export default function Calendar({ selectedDay, onSelectDay }: CalendarProps) {
   let today = startOfToday()
   let [currentMonth, setCurrentMonth] = React.useState(format(today, "MMM-yyyy"))
   let firstDayCurrentMonth = parse(currentMonth, "MMM-yyyy", new Date())
+  const [counts, setCounts] = React.useState<Record<string, number>>({})
 
   // Sync current month when selectedDay changes (optional, but good UX)
   React.useEffect(() => {
     setCurrentMonth(format(selectedDay, "MMM-yyyy"))
   }, [selectedDay])
+
+  // Fetch counts when currentMonth changes
+  React.useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        const monthStr = format(firstDayCurrentMonth, "yyyy-MM");
+        const data = await getMemoryCounts(monthStr);
+        setCounts(data);
+      } catch (error) {
+        console.error("Failed to load counts", error);
+      }
+    };
+    fetchCounts();
+  }, [currentMonth, selectedDay]); // accessing firstDayCurrentMonth derived from currentMonth
 
   let days = eachDayOfInterval({
     start: startOfWeek(firstDayCurrentMonth),
@@ -112,12 +128,17 @@ export default function Calendar({ selectedDay, onSelectDay }: CalendarProps) {
                     !isSameDay(day, selectedDay) && "hover:bg-gray-200",
                     (isSameDay(day, selectedDay) || isToday(day)) &&
                       "font-semibold",
-                    "mx-auto flex h-8 w-8 items-center justify-center rounded-full"
+                    "mx-auto flex h-8 w-8 items-center justify-center rounded-full relative"
                   )}
                 >
                   <time dateTime={format(day, "yyyy-MM-dd")}>
                     {format(day, "d")}
                   </time>
+                  {counts[format(day, "yyyy-MM-dd")] > 0 && (
+                    <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-blue-500 text-[10px] text-white ring-2 ring-white">
+                      {counts[format(day, "yyyy-MM-dd")]}
+                    </span>
+                  )}
                 </button>
               </div>
             ))}

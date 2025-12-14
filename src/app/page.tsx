@@ -5,7 +5,7 @@ import { startOfToday } from "date-fns"
 import Calendar from "@/components/Calendar"
 import WeeklyView from "@/components/WeeklyView"
 import MemorySection from "@/components/MemorySection"
-import { ThemeToggle } from "@/components/ThemeToggle"
+
 
 export default function Home() {
   let today = startOfToday()
@@ -14,7 +14,7 @@ export default function Home() {
   return (
     // 1. min-h-screen: 전체 화면 높이 사용
     // 2. p-4: 모바일에서 너무 꽉 차지 않게 여백 줌
-    <main className="min-h-screen bg-gray-50 dark:bg-black p-4 md:p-8 transition-colors duration-300">
+    <main className="min-h-screen bg-gray-50 p-4 md:p-8">
       
       {/* 레이아웃 컨테이너 */}
       {/* flex-col: 모바일에서는 세로 정렬 (위->아래) */}
@@ -26,15 +26,9 @@ export default function Home() {
         {/* lg:flex-1: PC에서는 가운데 공간을 차지하도록 설정 */}
         <div className="w-full lg:flex-1 lg:max-w-3xl lg:mx-auto space-y-6">
           {/* Grid Layout: [Empty] [WeeklyView] [ThemeToggle] to ensure centering and no overlap */}
-          <div className="sticky top-0 z-30 bg-gray-50/95 backdrop-blur-md pt-4 pb-4 border-b border-gray-200/50 shadow-sm grid grid-cols-[1fr_auto_1fr] items-start">
-            <div></div> {/* Left Spacer */}
-            
+          <div className="sticky top-0 z-30 bg-gray-50/95 backdrop-blur-md pt-4 pb-4 border-b border-gray-200/50 shadow-sm flex justify-center items-start">
             <div className="w-full max-w-3xl px-4">
               <WeeklyView selectedDay={selectedDay} onSelectDay={setSelectedDay} />
-            </div>
-
-            <div className="flex justify-end pr-4 pt-2">
-              <ThemeToggle />
             </div>
           </div>
 
