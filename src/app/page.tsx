@@ -21,10 +21,9 @@ export default function Home() {
     const token = localStorage.getItem("access_token");
     setIsLoggedIn(!!token);
     if (!token) {
-        // Optional: Redirect to login immediately?
-        // router.push('/login');
+        router.push('/login');
     }
-  }, []);
+  }, [router]);
 
   const handleLogout = () => {
     localStorage.removeItem("access_token");
