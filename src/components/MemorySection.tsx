@@ -101,7 +101,7 @@ export default function MemorySection({ selectedDay }: MemorySectionProps) {
     if (!editText.trim()) return
 
     try {
-      await updateMemory(id, editText)
+      await updateMemory(id, { text: editText })
       setMemories((prev) =>
         prev.map((m) => (m.id === id ? { ...m, text: editText } : m))
       )
