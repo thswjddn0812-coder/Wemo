@@ -36,6 +36,9 @@ export default function Calendar({ selectedDay, onSelectDay }: CalendarProps) {
   // Fetch counts when currentMonth changes
   React.useEffect(() => {
     const fetchCounts = async () => {
+      const token = localStorage.getItem("access_token");
+      if (!token) return; // Skip if not logged in
+
       try {
         const monthStr = format(firstDayCurrentMonth, "yyyy-MM");
         const data = await getMemoryCounts(monthStr);
