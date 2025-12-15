@@ -114,17 +114,17 @@ export default function MemorySection({ selectedDay }: MemorySectionProps) {
 
   return (
     <div className="w-full max-w-2xl mx-auto mt-8 p-4">
-      <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">
+      <h3 className="text-lg font-semibold text-gray-700 mb-4">
         {format(selectedDay, "yyyy년 MM월 dd일")}의 기록
       </h3>
-      <form onSubmit={handleSubmit} className="mb-8 bg-white dark:bg-zinc-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-zinc-700">
+      <form onSubmit={handleSubmit} className="mb-8 bg-white rounded-xl p-4 shadow-sm border border-gray-100">
         <div className="flex gap-4">
           <div className="flex-1">
             <textarea
               value={text}
               onChange={(e) => setText(e.target.value)}
               placeholder="오늘 어떤 추억이 있었나요?"
-              className="w-full h-24 p-3 rounded-lg bg-gray-50 dark:bg-zinc-900 border-none resize-none focus:ring-2 focus:ring-blue-500"
+              className="w-full h-24 p-3 rounded-lg bg-gray-50 border-none resize-none focus:ring-2 focus:ring-blue-500"
             />
             
             {selectedImage && (
@@ -179,7 +179,7 @@ export default function MemorySection({ selectedDay }: MemorySectionProps) {
         ) : (
           <>
             {memories.map((memory) => (
-              <div key={memory.id} className="bg-white dark:bg-zinc-800 rounded-xl p-4 shadow-sm border border-gray-100 dark:border-zinc-700 flex gap-4 group relative">
+              <div key={memory.id} className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex gap-4 group relative">
                 {memory.imageUrl && (
                   <img
                     src={memory.imageUrl}
@@ -194,7 +194,7 @@ export default function MemorySection({ selectedDay }: MemorySectionProps) {
                     </span>
                     
                     {editingId !== memory.id && (
-                      <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="flex gap-1 transition-opacity">
                         <button
                           onClick={() => startEditing(memory)}
                           className="p-1.5 text-gray-400 hover:text-blue-500 transition-colors"
@@ -212,11 +212,11 @@ export default function MemorySection({ selectedDay }: MemorySectionProps) {
                   </div>
 
                   {editingId === memory.id ? (
-                    <div className="mt-2">
-                      <textarea
-                        value={editText}
-                        onChange={(e) => setEditText(e.target.value)}
-                        className="w-full p-2 rounded-lg bg-gray-50 dark:bg-zinc-900 border border-blue-200 focus:ring-2 focus:ring-blue-500 resize-none"
+                      <div className="mt-2">
+                        <textarea
+                          value={editText}
+                          onChange={(e) => setEditText(e.target.value)}
+                          className="w-full p-2 rounded-lg bg-gray-50 border border-blue-200 focus:ring-2 focus:ring-blue-500 resize-none"
                         rows={3}
                       />
                       <div className="flex justify-end gap-2 mt-2">
@@ -235,7 +235,7 @@ export default function MemorySection({ selectedDay }: MemorySectionProps) {
                       </div>
                     </div>
                   ) : (
-                    <p className="text-gray-800 dark:text-gray-200 whitespace-pre-wrap">{memory.text}</p>
+                    <p className="text-gray-800 whitespace-pre-wrap">{memory.text}</p>
                   )}
                 </div>
               </div>

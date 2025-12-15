@@ -46,20 +46,18 @@ export default function Home() {
         {/* lg:flex-1: PC에서는 가운데 공간을 차지하도록 설정 */}
         <div className="w-full lg:flex-1 lg:max-w-3xl lg:mx-auto space-y-6">
           {/* Grid Layout: [Empty] [WeeklyView] [ThemeToggle] to ensure centering and no overlap */}
-          <div className="sticky top-0 z-30 bg-gray-50/95 backdrop-blur-md pt-4 pb-4 border-b border-gray-200/50 shadow-sm grid grid-cols-[1fr_auto_1fr] items-start">
-            <div></div> {/* Left Spacer */}
-
+          <div className="sticky top-0 z-30 bg-gray-50/95 backdrop-blur-md pt-4 pb-4 border-b border-gray-200/50 shadow-sm relative flex justify-center">
             <div className="w-full max-w-3xl px-4">
               <WeeklyView selectedDay={selectedDay} onSelectDay={setSelectedDay} />
             </div>
 
-            <div className="flex justify-end pr-4 pt-2">
+            <div className="absolute top-4 right-2 md:top-6 md:right-4 z-10 whitespace-nowrap">
                {isLoggedIn ? (
-                 <button onClick={handleLogout} className="text-sm font-medium text-gray-500 hover:text-red-500">
+                 <button onClick={handleLogout} className="text-[10px] md:text-sm font-medium bg-red-500 text-white px-2 py-1 md:px-3 md:py-1.5 rounded md:rounded-lg hover:bg-red-600 transition-colors shadow-sm">
                    로그아웃
                  </button>
                ) : (
-                 <Link href="/login" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                 <Link href="/login" className="text-[10px] md:text-sm font-medium text-indigo-600 hover:text-indigo-500">
                    로그인
                  </Link>
                )}
